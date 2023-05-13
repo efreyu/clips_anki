@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(clips_anki VERSION 0.1 LANGUAGES CXX)
+set(APP_NAME clips_anki) # clips_anki
+project(${APP_NAME} VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -12,46 +13,53 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-set(TS_FILES clips_anki_en_US.ts)
+set(APP_HEADER)
+set(APP_SOURCE)
+set(APP_UI)
+set(APP_TRANSLATION)
+
+file(GLOB_RECURSE APP_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE APP_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE APP_UI ${CMAKE_CURRENT_SOURCE_DIR}/ui/*.ui)
+file(GLOB_RECURSE APP_TRANSLATION ${CMAKE_CURRENT_SOURCE_DIR}/translation/*.ts)
 
 set(PROJECT_SOURCES
-        main.cpp
-        clipsanki.cpp
-        clipsanki.h
-        clipsanki.ui
-        ${TS_FILES}
+        ${APP_HEADER}
+        ${APP_SOURCE}
+        ${APP_UI}
+        ${APP_TRANSLATION}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(clips_anki
+    qt_add_executable(${APP_NAME}
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
 # Define target properties for Android with Qt 6 as:
-#    set_property(TARGET clips_anki APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+#    set_property(TARGET ${APP_NAME} APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${APP_TRANSLATION})
 else()
     if(ANDROID)
-        add_library(clips_anki SHARED
+        add_library(${APP_NAME} SHARED
             ${PROJECT_SOURCES}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
-        add_executable(clips_anki
+        add_executable(${APP_NAME}
             ${PROJECT_SOURCES}
         )
     endif()
 
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${APP_TRANSLATION})
 endif()
 
-target_link_libraries(clips_anki PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${APP_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-set_target_properties(clips_anki PROPERTIES
+set_target_properties(${APP_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -59,10 +67,10 @@ set_target_properties(clips_anki PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-install(TARGETS clips_anki
+install(TARGETS ${APP_NAME}
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(clips_anki)
+    qt_finalize_executable(${APP_NAME})
 endif()

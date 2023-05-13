@@ -1,5 +1,5 @@
 #include "clipsanki.h"
-#include "./ui_clipsanki.h"
+#include "../ui/ui_clipsanki.h"
 
 ClipsAnki::ClipsAnki(QWidget *parent)
     : QMainWindow(parent)

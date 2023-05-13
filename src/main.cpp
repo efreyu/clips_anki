@@ -20,8 +20,4 @@ int main(int argc, char *argv[])
     ClipsAnki w;
     w.show();
     return a.exec();
-	// 1 видео в клипы (100)
-	// 2 вытащить аудио в мп3
-	// 3 вытащить оба саба
-	// + взять скриншот
 }
