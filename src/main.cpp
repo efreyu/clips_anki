@@ -1,4 +1,4 @@
-#include "clipsanki.h"
+#include "mainWindow/clipsanki.h"
 
 #include <QApplication>
 #include <QLocale>
