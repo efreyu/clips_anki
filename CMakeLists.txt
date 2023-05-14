@@ -67,6 +67,11 @@ set_target_properties(${APP_NAME} PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+target_include_directories(${APP_NAME}
+    PRIVATE ${CMAKE_SOURCE_DIR}/src
+    PRIVATE ${CMAKE_SOURCE_DIR}/ui
+)
+
 install(TARGETS ${APP_NAME}
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
