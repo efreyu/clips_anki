@@ -13,3 +13,9 @@ ClipsAnki::~ClipsAnki()
     delete ui;
 }
 
+bool ClipsAnki::eventFilter(QObject* obj, QEvent* event) {
+	QMainWindow::eventFilter(obj, event);
+
+	//
+}
+
